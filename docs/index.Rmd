@@ -36,7 +36,7 @@ All variables are severely skewed and have large tails, indicating that a log tr
 
 ```{r}
 # Read data
-inc <- read.csv("https://raw.githubusercontent.com/vera-institute/incarceration-trends/master/incarceration_trends.csv", stringsAsFactors = FALSE)
+inc <- read_csv("incarceration_trends.csv")
 
 # Select variables of interest
 my_dat <- inc %>% 

@@ -1,5 +1,5 @@
 ---
-title: "Data Visualization(incarceration)"
+title: "Incarceration Visualisation"
 author: "Takumi Shimada"
 date: "2/19/2022"
 output: html_document
@@ -12,17 +12,18 @@ library(fBasics)
 library(plotly)
 library(sf)
 library(urbnmapr)
+library(reshape2)
 
 ```
 
 # Introduction
-This research included data and analysis on incarceration rates in the United States from 1970 to 2018. The variable of interest will be 'total jail pop,' which represents the total number of people in prison. Furthermore, 'year' and 'state' variables will be included in the dataset for analysis so that a comparison may be made by year and state. In addition, variables that provide rates for populations of various races in jail will be included in the dataset so that race and incarceration may be compared. Finally, the dataset includes the 'land area' and 'urbanicity' variables to show a link between 'total jail pop' and 'land area' in terms of whether areas are urban, sub-urban, rural, or mid/small.
+This research included data and analysis on incarceration rates in the United States from 1970 to 2018. The variable of interest will be 'total jail pop,' which represents the total number of people in prison. Furthermore, 'year' and'state' variables will be included in the dataset for analysis so that a comparison may be made by year and state. In addition, variables that provide rates for populations of various races in jail will be included in the dataset so that race and incarceration may be compared. Finally, the dataset includes the 'land area' and 'urbanicity' variables to show a link between 'total jail pop' and 'land area' in terms of whether areas are urban, sub-urban, rural, or mid/small.
 
 
 
 
 # Summary statistics
-Table 1 shows summary data for the study's numeric variables. The highest value of 'total jail pop' is 23467.19, while the smallest value is 0. The mean value of total jail population across all states and years is 161.121, with a standard deviation of 615.541, indicating that observations in the variable are considerably spread.
+Table 1 summarizes the study's numeric variables. The highest value of 'total jail pop' is 23467.19, while the smallest value is 0. The mean value of total jail population across all states and years is 161.121, with a standard deviation of 615.541, suggesting that observations in the variable are considerably distributed. 
 
 When comparing the averages of the jail population rates for different races, it can be seen that African Americans have the highest mean of 4393.668, meaning that African Americans have the greatest proportion of their population in jail of all races in the US. Native Americans are next, followed by Latin Americans, and finally white Americans, who have the lowest percentage of their population in prison.
 
@@ -35,7 +36,7 @@ All variables are severely skewed and have large tails, indicating that a log tr
 
 ```{r}
 # Read data
-inc <- read_csv("incarceration_trends.csv")
+inc <- read.csv("https://raw.githubusercontent.com/vera-institute/incarceration-trends/master/incarceration_trends.csv", stringsAsFactors = FALSE)
 
 # Select variables of interest
 my_dat <- inc %>% 
@@ -56,7 +57,7 @@ knitr::kable(t_summ, caption = "Summary statistics of selected variables")
 
 
 
-The top ten years with the greatest average total prison population are listed in Table 2. The year 2008 saw the largest number of incarcerations, according to statistics.
+Table 2 presents top 10 years with highest average total jail population. It is observed that the year 2008 had the highest number of incarcerations.
 
 
 ```{r}
@@ -69,7 +70,7 @@ knitr::kable(dat1,
              caption= "Top 10 years with highest average total jail population")
 ```
 
-The top ten states with the greatest average total jail population are listed in Table 3. With an average of 2315.2551, the state of DC had the largest number of incarcerations.
+Table 3 presents top 10 states with highest average total jail population. It is observed that the state of DC had the highest number of incarcerations with an average of 2315.2551.
 
 ```{r}
 # Generate dataframe for average population by state. Select top 10 states
@@ -85,19 +86,29 @@ knitr::kable(dat2,
 
 
 # Trend over time
-The graph below shows how the average total jail population in all states has changed over time. At first, the incarceration rate barely rose or dropped. However, from the year 1978, there is a large increase in incarceration rates, which peaks in the year 2008. To the year 2018, incarceration rates have been steadily declining.
-
+The graph below shows how the average overall jail population has changed over time based on race.
+At first, the number of those incarcerated hardly changed.
+However, following 1984, there was a significant increase in incarceration rates, which peaked in 2008. This is followed by a steady decline in incarceration rates throughout 2018. The white race jail population climbed substantially from 2008 to 2018, while the black, Latino, and other race jail populations fell.
+In addition, white people are the most prevalent race in prison, followed by Black, Latino, Other, and Native Americans.
 
 
 ```{r}
 # Generate dataframe for average population by year
-df1 <- my_dat %>% group_by(year) %>% 
-  summarise(Avg.Pop = mean(total_jail_pop, na.rm = T))
+df1 <- inc %>% 
+  dplyr::select(white_jail_pop, black_jail_pop, native_jail_pop, latinx_jail_pop,
+                other_race_jail_pop, year) %>% 
+  dplyr::rename(White = "white_jail_pop", Black = "black_jail_pop", 
+                Native = "native_jail_pop", Latin = "latinx_jail_pop",
+                Other = "other_race_jail_pop") %>% 
+  reshape2::melt(id = "year") %>% dplyr::group_by(year, variable) %>% 
+  summarise(Avg.Pop = mean(value, na.rm = T))
+  
+
 
 # Make plot
-ggplot(df1, aes(x = year, y = Avg.Pop)) +
+ggplot(df1, aes(x = year, y = Avg.Pop, color = variable)) +
   geom_line() + 
-  labs(x = "Year", y = "Average population", 
+  labs(x = "Year", y = "Average population", color = "Race",
        title = "Evolution of average incacerations over the years") + 
         theme(plot.title = element_text(hjust=0.5))
 
@@ -126,7 +137,7 @@ ggplot(my_dat, aes(x = log(land_area), y = log(total_jail_pop),
 
 
 # Geographical representation
-Finally, the shape file of the United States is retrieved from <https://urbaninstitute.github.io/urbnmapr/> and loaded into r to create a geographical representation of the variable of interest. The average total jail population per state is then calculated for all years, and the result is combined with the shape file data to create a dataset for charting. The map below depicts the distribution of the average total jail population in the several states.
+Finally, the shape file of the United States is retrieved from <https://urbaninstitute.github.io/urbnmapr/> and loaded into r to create a geographical representation of the variable of interest. The average total jail population per state is then calculated for all years, and the result is combined with the shape file data to create a dataframe for charting. The map below depicts the distribution of the average total jail population in the several states.
 
 ```{r}
 df2 <- my_dat %>% group_by(state) %>% 
@@ -140,10 +151,15 @@ spatial_data <- left_join(df2,
   st_as_sf()
 
 
-ggplot() +
-  geom_sf(spatial_data,
-          mapping = aes(fill = log(Avg.Pop))) +
+m <-  ggplot() +
+  geom_sf(spatial_data, mapping = aes(fill = log(Avg.Pop))) +
+  geom_sf_text(data = get_urbn_labels(map = "states", sf = TRUE), 
+               aes(label = state_abbv), size = 2) +
   scale_fill_distiller("Log Average Population", palette="Spectral") +
   labs(title = "Average population by State", x = "Longitude", y = "Latitude") +
   theme(plot.title = element_text(hjust=0.5))
-  
+ggplotly(m)
+
+
+```
+

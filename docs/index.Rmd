@@ -118,15 +118,15 @@ ggplot(df1, aes(x = year, y = Avg.Pop, color = variable)) +
 
 # Comparison between variables
 
-The scatter plot below shows how the total jail population variable relates to land area with regard to the urbanicity variable. There is minimal to no link between total population and land area, as can be shown. Furthermore, it is clear that rural areas have the smallest overall jail population, whereas metropolitan areas have the largest total jail population.
+The box plot below shows how the total jail population variable relates to the urbanicity variable. It is clear that rural areas have the smallest total jail population, whereas urban areas have the highest total jail population.
 
 ```{r}
-# Scatter plot
-ggplot(my_dat, aes(x = log(land_area), y = log(total_jail_pop),
-                   color = urbanicity)) +
-  geom_point(size = 1) +
-  labs(x = "Log Land area (Sq.Km)", y = "Log Total population",
-       title = "Relationsip between land area and total jail population") +
+# Box plot
+ggplot(my_dat, aes(x = urbanicity, y = log(total_jail_pop),
+                   fill = urbanicity)) +
+  geom_boxplot() +
+  labs(x = "Region", y = "Log Total population",
+       title = "Relationsip between region and total jail population") +
   theme(plot.title = element_text(hjust=0.5))
 
 

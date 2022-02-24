@@ -3,7 +3,8 @@ library(tidyverse)
 library(fBasics)
 library(plotly)
 library(sf)
-
+library(urbnmapr)
+library(reshape2)
 # Read data
 inc <- read_csv("incarceration_trends.csv")
 
@@ -63,6 +64,14 @@ ggplot(df1, aes(x = year, y = Avg.Pop, color = variable)) +
     title = "Evolution of average incacerations over the years"
   ) +
   theme(plot.title = element_text(hjust = 0.5))
+
+# Box plot
+ggplot(my_dat, aes(x = urbanicity, y = log(total_jail_pop),
+                   fill = urbanicity)) +
+  geom_boxplot() +
+  labs(x = "Region", y = "Log Total population",
+       title = "Relationsip between region and total jail population") +
+  theme(plot.title = element_text(hjust=0.5))
 
 # Geographic representation
 df2 <- my_dat %>%

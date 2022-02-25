@@ -137,7 +137,7 @@ ggplot(my_dat, aes(x = urbanicity, y = log(total_jail_pop),
 
 
 # Geographical representation
-Finally, the shape file of the United States is retrieved from <https://urbaninstitute.github.io/urbnmapr/> and loaded into r to create a geographical representation of the variable of interest. The average total jail population per state is then calculated for all years, and the result is combined with the shape file data to create a dataframe for charting. The map below depicts the distribution of the average total jail population in the several states.It is clear that California state has the highest average total jail population.
+Finally, the shape file of the United States is retrieved from <https://urbaninstitute.github.io/urbnmapr/> and loaded into r to create a geographical representation of the variable of interest. The average total jail population per state is then calculated for all years, and the result is combined with the shape file data to create a dataframe for charting. The map below depicts the distribution of the average total jail population in the several states.It is clear that CA and DC has the higher average total jail population, on the contrary, AK has lower average total jail population.
 
 ```{r}
 df2 <- my_dat %>% group_by(state) %>% 

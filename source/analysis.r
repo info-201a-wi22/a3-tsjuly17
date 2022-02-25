@@ -66,12 +66,16 @@ ggplot(df1, aes(x = year, y = Avg.Pop, color = variable)) +
   theme(plot.title = element_text(hjust = 0.5))
 
 # Box plot
-ggplot(my_dat, aes(x = urbanicity, y = log(total_jail_pop),
-                   fill = urbanicity)) +
+ggplot(my_dat, aes(
+  x = urbanicity, y = log(total_jail_pop),
+  fill = urbanicity
+)) +
   geom_boxplot() +
-  labs(x = "Region", y = "Log Total population",
-       title = "Relationsip between region and total jail population") +
-  theme(plot.title = element_text(hjust=0.5))
+  labs(
+    x = "Region", y = "Log Total population",
+    title = "Relationsip between region and total jail population"
+  ) +
+  theme(plot.title = element_text(hjust = 0.5))
 
 # Geographic representation
 df2 <- my_dat %>%
@@ -81,8 +85,8 @@ df2 <- my_dat %>%
 
 
 spatial_data <- left_join(df2,
-                          get_urbn_map(map = "states", sf = TRUE),
-                          by = "state_abbv"
+  get_urbn_map(map = "states", sf = TRUE),
+  by = "state_abbv"
 ) %>%
   st_as_sf()
 
@@ -97,3 +101,5 @@ m <- ggplot() +
   labs(title = "Average population by State", x = "Longitude", y = "Latitude") +
   theme(plot.title = element_text(hjust = 0.5))
 ggplotly(m)
+
+helllo

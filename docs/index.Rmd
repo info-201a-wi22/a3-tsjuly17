@@ -86,7 +86,7 @@ knitr::kable(dat2,
 
 
 # Trend over time
-The graph below shows how the average overall jail population has changed over time based on race.
+The graph below shows how the average overall jail population has changed over time based on race.I included the chart because I thought line chart makes easier to visualize the trend over time in general.
 At first, the number of those incarcerated hardly changed.
 However, following 1984, there was a significant increase in incarceration rates, which peaked in 2008. This is followed by a steady decline in incarceration rates throughout 2018. The white race jail population climbed substantially from 2008 to 2018, while the black, Latino, and other race jail populations fell.
 In addition, white people are the most prevalent race in prison, followed by Black, Latino, Other, and Native Americans.
@@ -118,7 +118,7 @@ ggplot(df1, aes(x = year, y = Avg.Pop, color = variable)) +
 
 # Comparison between variables
 
-The box plot below shows how the total jail population variable relates to the urbanicity variable. It is clear that rural areas have the smallest total jail population, whereas urban areas have the highest total jail population.
+The box plot below shows how the total jail population variable relates to the urbanicity variable. I included the chart because I thought there is an relationship between total jail population and region; it's easier to visualize the pattern on box plot.It is clear that rural areas have the smallest total jail population, whereas urban areas have the highest total jail population.
 
 ```{r}
 # Box plot
@@ -137,7 +137,7 @@ ggplot(my_dat, aes(x = urbanicity, y = log(total_jail_pop),
 
 
 # Geographical representation
-Finally, the shape file of the United States is retrieved from <https://urbaninstitute.github.io/urbnmapr/> and loaded into r to create a geographical representation of the variable of interest. The average total jail population per state is then calculated for all years, and the result is combined with the shape file data to create a dataframe for charting. The map below depicts the distribution of the average total jail population in the several states.It is clear that CA  has the higher average total jail population, on the contrary, AK has lower average total jail population.
+Finally, the shape file of the United States is retrieved from <https://urbaninstitute.github.io/urbnmapr/> and loaded into r to create a geographical representation of the variable of interest. The average total jail population per state is then calculated for all years, and the result is combined with the shape file data to create a dataframe for charting. The map below depicts the distribution of the average total jail population in the several states.I included the map because I thought it would be easier to visualize the pattern by the state on the map. It is clear that CA  has the higher average total jail population, on the contrary, AK has lower average total jail population.
 
 ```{r}
 df2 <- my_dat %>% group_by(state) %>% 

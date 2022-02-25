@@ -1,7 +1,7 @@
 ---
 title: "Incarceration Visualisation"
 author: "Takumi Shimada"
-date: "2/19/2022"
+date: "2/24/2022"
 output: html_document
 ---
 
@@ -118,7 +118,7 @@ ggplot(df1, aes(x = year, y = Avg.Pop, color = variable)) +
 
 # Comparison between variables
 
-The box plot below shows how the total jail population variable relates to the urbanicity variable. It is clear that rural areas have the smallest total jail population, whereas urban areas have the highest total jail population.
+The box plot below shows how the total jail population variable relates to the urbanicity variable. It is clear that rural areas have the smallest total jail population, whereas urban areas have the highest total jail population.
 
 ```{r}
 # Box plot

@@ -101,5 +101,3 @@ m <- ggplot() +
   labs(title = "Average population by State", x = "Longitude", y = "Latitude") +
   theme(plot.title = element_text(hjust = 0.5))
 ggplotly(m)
-
-helllo
